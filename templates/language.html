@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Select Language</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #FFC371, #FF5F6D); /* Gradient background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #FFF; /* White text color */
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        form {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        select {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #333; /* Dark gray background */
+            color: #FFF; /* White text color */
+            cursor: pointer;
+        }
+        button {
+            margin-top: 1rem;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #333; /* Dark gray background */
+            color: #FFF; /* White text color */
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Select a Language for Genre: {{ genre }}</h1>
+        <form action="/proverbs" method="post">
+            <input type="hidden" name="genre" value="{{ genre }}">
+            <select name="language">
+                {% for language in languages %}
+                <option value="{{ language }}">{{ language }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+
+</html>

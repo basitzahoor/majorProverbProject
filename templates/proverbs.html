@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Proverbs List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #FFC371, #FF5F6D); /* Gradient background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #FFF; /* White text color */
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: black; /* Black text color */
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.5); /* Lighter semi-transparent white background */
+        }
+        h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: black; /* Black text color */
+        }
+        p {
+            font-size: 1rem;
+            margin: 0;
+            color: black; /* Black text color */
+        }
+        .speaker-icon {
+            width: 15px; /* Adjust the width as needed */
+            height: 15px; /* Adjust the height as needed */
+            cursor: pointer;
+            margin-left: 5px;
+            vertical-align: middle; /* Align the icon vertically */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Proverbs in {{ genre }} - {{ language }}</h1>
+        <ul>
+            {% for proverb in proverbs %}
+            <li>
+                <h1>{{ proverb[1] }}</h1>
+                <h3>(CAN BE READ AS)</h3>
+                <p>{{ proverb[2] }} <img class="speaker-icon" src="/static/images/speaker-icon.jpeg" data-proverb="{{ proverb[1] }}" alt="Speaker Icon"></p>
+                <h3>ENGLISH TRANSLATION =></h3>
+                <p>{{ proverb[3] }}</p> 
+                <p><h3>--------------------------------</h3></p>
+                <!-- Update the onclick function to include the proverb as a URL parameter -->
+                <button onclick="explain('{{ proverb[1] | replace("'", "\\'") }}')">Explain</button>
+            </li>
+            {% endfor %}
+        </ul>
+        
+        <!-- JavaScript for TTS and Explanation redirection -->
+        <script>
+            function explain(proverb) {
+                // URI encode the proverb to ensure it's safe for URL inclusion
+                window.location.href = `/explanation?proverb=${encodeURIComponent(proverb)}`;
+            }
+            const speakerIcons = document.querySelectorAll('.speaker-icon');
+            speakerIcons.forEach(icon => {
+                icon.addEventListener('click', () => {
+                    const proverb = icon.dataset.proverb;
+                    speakProverb(proverb);
+                });
+            });
+
+            function speakProverb(text) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ur-PK'; // Language code for Urdu (change accordingly)
+                utterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'ur-PK');
+                speechSynthesis.speak(utterance);
+            }
+        </script>
+    </div>
+</body>
+</html>
